@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.inspur.demo.user.dao.UserMapper">
+	<resultMap type="User" id="userMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="gender" column="gender" />
+		<result property="email" column="email" />
+		<result property="birthday" column="birthday" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="User">
+		insert into demo_user(
+		    id,
+		    name,
+		    gender,
+		    email,
+		    birthday,
+		    create_time
+		)values(
+		    #{id},
+		    #{name},
+		    #{gender},
+		    #{email},
+		    #{birthday},
+		    #{createTime}
+		)
+	</insert>
+	
+	<update id="update" parameterType="User">
+		update demo_user
+		<set>
+			<if test="name != null and name != ''">
+			    name = #{name},
+			</if>
+			<if test="gender != null and gender != ''">
+			    gender = #{gender},
+			</if>
+			<if test="email != null and email != ''">
+			    email = #{email},
+			</if>
+			<if test="birthday != null and birthday != ''">
+			    birthday = #{birthday},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete" parameterType="string">
+		delete from demo_user where id = #{_parameter}
+	</delete>
+	
+	<delete id="batchDelete" parameterType="string">
+		delete from demo_user where id in
+		<foreach collection="array" open="(" close=")" item="item" separator=",">
+		    #{item}
+		</foreach>
+	</delete>
+	
+	<select id="getUserById" parameterType="string" resultMap="userMap">
+		select id, name, gender, email, birthday, create_time from demo_user where id = #{_parameter}
+	</select>
+	
+	<select id="getAll" resultMap="userMap">
+		select id, name, gender, email, birthday, create_time from demo_user order by create_time
+	</select>
+	
+	<select id="queryUserByParam" parameterType="map" resultMap="userMap">
+		select id, name, gender, email, birthday, create_time from demo_user
+		<where>
+			<if test="name != null and name != ''">
+				name like '%' + ${name} + '%'
+			</if>
+			<if test="gender != null and gender !='' ">
+				gender = #{gender}
+			</if>
+			<if test="gender != null and gender !='' ">
+				email = #{email}
+			</if>
+		</where>
+		order by create_time
+	</select>
+</mapper>
