@@ -5,5 +5,5 @@
 						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 						http://api.weibo.com/schema/motan http://api.weibo.com/schema/motan.xsd">
 
-	<motan:service interface="com.inspur.study.user.service.IUserService" ref="userService" export="8002"/>
+	<motan:service interface="com.inspur.demo.user.service.IUserService" ref="userService" export="8002"/>
 </beans>
